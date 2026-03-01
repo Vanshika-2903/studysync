@@ -1,26 +1,534 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─── Theme System ─────────────────────────────────────────────────────────── */
+
+/* Dark theme (default) */
+:root,
+[data-theme="dark"] {
+  --page-bg: #07070f;
+  --page-bg-alt: #08080f;
+  --surface-bg: rgba(255, 255, 255, 0.02);
+  --surface-bg-hover: rgba(255, 255, 255, 0.04);
+  --surface-border: rgba(255, 255, 255, 0.07);
+  --surface-border-hover: rgba(255, 255, 255, 0.12);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.70);
+  --text-tertiary: rgba(255, 255, 255, 0.40);
+  --text-muted: rgba(255, 255, 255, 0.25);
+  --text-faint: rgba(255, 255, 255, 0.15);
+  --header-bg: rgba(7, 7, 15, 0.90);
+  --header-bg-alt: rgba(8, 8, 15, 0.80);
+  --backdrop-blur: blur(24px);
+  --skeleton-bg: rgba(255, 255, 255, 0.08);
+  --skeleton-bg-soft: rgba(255, 255, 255, 0.04);
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --input-border: rgba(255, 255, 255, 0.08);
+  --dropdown-bg: #0f0f1e;
+  --toast-bg: #1e1e2e;
+  --toast-border: rgba(139, 92, 246, 0.25);
+  --toast-text: #ffffff;
+  --grid-opacity: 0.011;
+  --glow-opacity: 1;
+  --shadow-heavy: rgba(0, 0, 0, 0.6);
+  --shadow-card: rgba(0, 0, 0, 0.4);
+  color-scheme: dark;
 }
 
+/* Light theme — premium warm palette */
+[data-theme="light"] {
+  --page-bg: #f8f9fc;
+  --page-bg-alt: #f3f4f8;
+  --surface-bg: #ffffff;
+  --surface-bg-hover: #f7f7fb;
+  --surface-border: rgba(0, 0, 0, 0.07);
+  --surface-border-hover: rgba(0, 0, 0, 0.15);
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-tertiary: #6b7280;
+  --text-muted: #9ca3af;
+  --text-faint: #d1d5db;
+  --header-bg: rgba(248, 249, 252, 0.95);
+  --header-bg-alt: rgba(243, 244, 248, 0.92);
+  --backdrop-blur: blur(20px);
+  --skeleton-bg: #e5e7eb;
+  --skeleton-bg-soft: #f3f4f6;
+  --input-bg: #f9fafb;
+  --input-border: #e5e7eb;
+  --dropdown-bg: #ffffff;
+  --toast-bg: #ffffff;
+  --toast-border: rgba(139, 92, 246, 0.15);
+  --toast-text: #111827;
+  --grid-opacity: 0.04;
+  --glow-opacity: 0.35;
+  --shadow-heavy: rgba(0, 0, 0, 0.05);
+  --shadow-card: rgba(0, 0, 0, 0.04);
+  color-scheme: light;
+}
+
+/* ─── Tailwind v4 Theme Tokens ─────────────────────────────────────────────── */
+
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--page-bg);
+  --color-foreground: var(--text-primary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ─── Base Styles ──────────────────────────────────────────────────────────── */
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--page-bg);
+  color: var(--text-primary);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* ─── Light Theme Global Overrides ─────────────────────────────────────────── */
+/* These remap hardcoded dark colors used across all pages without touching JSX */
+
+/* Page backgrounds */
+[data-theme="light"] .bg-\[\#07070f\],
+[data-theme="light"] .bg-\[\#08080f\] {
+  background-color: var(--page-bg) !important;
+}
+
+/* Header/navbar backgrounds with opacity */
+[data-theme="light"] .bg-\[\#07070f\]\/90,
+[data-theme="light"] .bg-\[\#07070f\]\/85,
+[data-theme="light"] .bg-\[\#08080f\]\/80 {
+  background-color: var(--header-bg) !important;
+}
+
+/* Primary text: text-white → dark in light mode */
+[data-theme="light"] .text-white {
+  color: var(--text-primary) !important;
+}
+
+/* Secondary text tones — rich contrast hierarchy */
+[data-theme="light"] .text-white\/90,
+[data-theme="light"] .text-white\/85,
+[data-theme="light"] .text-white\/80 {
+  color: #374151 !important;
+}
+
+[data-theme="light"] .text-white\/70,
+[data-theme="light"] .text-white\/60,
+[data-theme="light"] .text-white\/55 {
+  color: #4b5563 !important;
+}
+
+[data-theme="light"] .text-white\/50,
+[data-theme="light"] .text-white\/45,
+[data-theme="light"] .text-white\/40,
+[data-theme="light"] .text-white\/35 {
+  color: #6b7280 !important;
+}
+
+[data-theme="light"] .text-white\/30,
+[data-theme="light"] .text-white\/25,
+[data-theme="light"] .text-white\/20,
+[data-theme="light"] .text-white\/15 {
+  color: #9ca3af !important;
+}
+
+/* Surface backgrounds (cards, panels) — crisp white */
+[data-theme="light"] .bg-white\/\[0\.02\],
+[data-theme="light"] .bg-white\/\[0\.03\] {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.03) !important;
+}
+
+[data-theme="light"] .bg-white\/\[0\.04\],
+[data-theme="light"] .bg-white\/\[0\.05\],
+[data-theme="light"] .bg-white\/\[0\.06\] {
+  background-color: #f9fafb !important;
+}
+
+[data-theme="light"] .bg-white\/\[0\.07\],
+[data-theme="light"] .bg-white\/\[0\.08\],
+[data-theme="light"] .bg-white\/\[0\.09\] {
+  background-color: #f3f4f6 !important;
+}
+
+/* Hover surface backgrounds */
+[data-theme="light"] .hover\:bg-white\/\[0\.02\]:hover,
+[data-theme="light"] .hover\:bg-white\/\[0\.03\]:hover,
+[data-theme="light"] .hover\:bg-white\/\[0\.04\]:hover,
+[data-theme="light"] .hover\:bg-white\/\[0\.05\]:hover,
+[data-theme="light"] .hover\:bg-white\/\[0\.06\]:hover,
+[data-theme="light"] .hover\:bg-white\/\[0\.07\]:hover {
+  background-color: #f3f4f6 !important;
+}
+
+/* Borders — soft gray */
+[data-theme="light"] .border-white\/\[0\.04\],
+[data-theme="light"] .border-white\/\[0\.05\],
+[data-theme="light"] .border-white\/\[0\.06\],
+[data-theme="light"] .border-white\/\[0\.07\],
+[data-theme="light"] .border-white\/\[0\.08\],
+[data-theme="light"] .border-white\/\[0\.09\] {
+  border-color: #e5e7eb !important;
+}
+
+[data-theme="light"] .hover\:border-white\/\[0\.08\]:hover,
+[data-theme="light"] .hover\:border-white\/\[0\.12\]:hover,
+[data-theme="light"] .hover\:border-white\/15:hover {
+  border-color: var(--surface-border-hover) !important;
+}
+
+/* Divide colors */
+[data-theme="light"] .divide-white\/\[0\.04\]> :not(:last-child) {
+  border-color: var(--surface-border) !important;
+}
+
+/* Border-t/b separators */
+[data-theme="light"] .border-t.border-white\/\[0\.04\],
+[data-theme="light"] .border-b.border-white\/\[0\.04\],
+[data-theme="light"] .border-t.border-white\/\[0\.05\],
+[data-theme="light"] .border-b.border-white\/\[0\.05\],
+[data-theme="light"] .border-t.border-white\/\[0\.06\],
+[data-theme="light"] .border-b.border-white\/\[0\.06\] {
+  border-color: var(--surface-border) !important;
+}
+
+/* Skeleton/pulse elements */
+[data-theme="light"] .animate-pulse .bg-white\/\[0\.04\],
+[data-theme="light"] .animate-pulse .bg-white\/\[0\.05\],
+[data-theme="light"] .animate-pulse .bg-white\/\[0\.06\],
+[data-theme="light"] .animate-pulse .bg-white\/\[0\.07\],
+[data-theme="light"] .animate-pulse .bg-white\/\[0\.08\],
+[data-theme="light"] .animate-pulse .bg-white\/\[0\.09\] {
+  background-color: var(--skeleton-bg) !important;
+}
+
+/* Input fields */
+[data-theme="light"] input,
+[data-theme="light"] textarea {
+  background-color: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* Dropdown/popover backgrounds */
+[data-theme="light"] .bg-\[\#0f0f1e\] {
+  background-color: var(--dropdown-bg) !important;
+}
+
+/* Progress bar backgrounds */
+[data-theme="light"] .bg-black\/30 {
+  background-color: #e5e7eb !important;
+}
+
+/* Dark progress bar fill in light mode */
+[data-theme="light"] .bg-gradient-to-r.from-violet-600,
+[data-theme="light"] .bg-gradient-to-r[class*="from-violet"] {
+  opacity: 0.85;
+}
+
+/* Ambient background glows — reduce in light mode */
+[data-theme="light"] .blur-\[200px\],
+[data-theme="light"] .blur-\[180px\],
+[data-theme="light"] .blur-\[160px\],
+[data-theme="light"] .blur-\[150px\],
+[data-theme="light"] .blur-\[140px\],
+[data-theme="light"] .blur-\[130px\],
+[data-theme="light"] .blur-\[100px\],
+[data-theme="light"] .blur-3xl,
+[data-theme="light"] .blur-2xl,
+[data-theme="light"] .blur-lg {
+  opacity: var(--glow-opacity) !important;
+}
+
+/* Grid pattern subtle adjustment */
+[data-theme="light"] .opacity-\[0\.011\],
+[data-theme="light"] .opacity-\[0\.012\],
+[data-theme="light"] .opacity-\[0\.018\] {
+  opacity: var(--grid-opacity) !important;
+}
+
+/* Shadow overrides */
+[data-theme="light"] .shadow-2xl.shadow-black\/60,
+[data-theme="light"] .shadow-2xl.shadow-black\/40,
+[data-theme="light"] .shadow-xl.shadow-black\/20 {
+  --tw-shadow-color: var(--shadow-card) !important;
+}
+
+/* Calendar-specific dark overrides */
+[data-theme="light"] .rbc-calendar {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .rbc-toolbar button {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="light"] .rbc-header {
+  color: var(--text-tertiary) !important;
+}
+
+[data-theme="light"] .rbc-off-range-bg {
+  background: rgba(0, 0, 0, 0.02) !important;
+}
+
+[data-theme="light"] .rbc-today {
+  background: rgba(99, 102, 241, 0.08) !important;
+}
+
+/* Keep gradient text visible */
+[data-theme="light"] [style*="-webkit-text-fill-color: transparent"] {
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Scrollbar styling for light mode */
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: var(--page-bg);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Gradient buttons should keep white text in both themes */
+[data-theme="light"] .bg-gradient-to-r.text-white,
+[data-theme="light"] .bg-gradient-to-br.text-white,
+[data-theme="light"] [class*="from-violet-"][class*="to-indigo-"].text-white,
+[data-theme="light"] [class*="from-violet-600"].text-white,
+[data-theme="light"] [class*="from-sky-500"].text-white,
+[data-theme="light"] [class*="from-cyan-500"].text-white,
+[data-theme="light"] [class*="from-emerald-500"].text-white,
+[data-theme="light"] [class*="from-amber-500"].text-white,
+[data-theme="light"] [class*="from-red-500"].text-white,
+[data-theme="light"] [class*="from-fuchsia-500"].text-white {
+  color: #ffffff !important;
+}
+
+/* Avatar circles should stay white text */
+[data-theme="light"] .rounded-full.bg-gradient-to-br .text-white,
+[data-theme="light"] .rounded-xl.bg-gradient-to-br .text-white,
+[data-theme="light"] .rounded-2xl.bg-gradient-to-br .text-white {
+  color: #ffffff !important;
+}
+
+/* Level badge text */
+[data-theme="light"] .bg-gradient-to-br.from-violet-600 .text-white,
+[data-theme="light"] .bg-gradient-to-br.from-violet-500 .text-white {
+  color: #ffffff !important;
+}
+
+/* SVG icons inside gradient elements - keep white */
+[data-theme="light"] .bg-gradient-to-br svg.text-white,
+[data-theme="light"] .bg-gradient-to-r svg.text-white {
+  color: #ffffff !important;
+}
+
+/* Sidebar active nav items — preserve white text */
+[data-theme="light"] .bg-gradient-to-r[class*="shadow-"] .text-white {
+  color: #ffffff !important;
+}
+
+/* Fix line-through text in light mode */
+[data-theme="light"] .line-through.text-white\/25,
+[data-theme="light"] .line-through.text-white\/30,
+[data-theme="light"] .line-through.text-white\/20 {
+  color: rgba(26, 26, 46, 0.30) !important;
+}
+
+/* Smooth theme transition on all elements */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+/* Exclude elements that already have transitions to avoid conflicts */
+[class*="transition-"],
+[class*="animate-"],
+.no-theme-transition {
+  transition-property: all;
+}
+
+/* ─── Sidebar overrides (light mode) ───────────────────────────────────────── */
+[data-theme="light"] [data-sidebar="main"] {
+  background: #ffffff !important;
+  border-right: 1px solid #e5e7eb !important;
+  box-shadow: 1px 0 8px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Sidebar text — high contrast readable colors */
+[data-theme="light"] [data-sidebar="main"] p,
+[data-theme="light"] [data-sidebar="main"] span,
+[data-theme="light"] [data-sidebar="main"] a {
+  color: #6b7280;
+}
+
+/* Active nav link text stays white on gradient */
+[data-theme="light"] [data-sidebar="main"] a[class*="bg-gradient"] span {
+  color: #ffffff !important;
+}
+
+/* Sidebar nav link hover */
+[data-theme="light"] [data-sidebar="main"] a:hover span,
+[data-theme="light"] [data-sidebar="main"] a:hover {
+  color: #111827;
+  background-color: #f3f4f6;
+}
+
+/* Subject card text */
+[data-theme="light"] [data-sidebar="main"] button span {
+  color: #4b5563;
+}
+
+[data-theme="light"] [data-sidebar="main"] button p {
+  color: #9ca3af;
+}
+
+/* Sidebar section dividers */
+[data-theme="light"] [data-sidebar="main"] .h-px {
+  background-color: #e5e7eb !important;
+}
+
+/* Sidebar input fields */
+[data-theme="light"] [data-sidebar="main"] input {
+  background-color: #f9fafb !important;
+  border-color: #e5e7eb !important;
+  color: #111827 !important;
+}
+
+/* Sidebar card borders */
+[data-theme="light"] [data-sidebar="main"] button[class*="border"] {
+  border-color: #e5e7eb;
+}
+
+/* Sidebar + button — subtle violet tint */
+[data-theme="light"] [data-sidebar="main"] button[class*="bg-violet"] {
+  background-color: #f5f3ff !important;
+  border-color: #ddd6fe !important;
+}
+
+/* Separator lines */
+[data-theme="light"] .bg-white\/\[0\.05\] {
+  background-color: #e5e7eb !important;
+}
+
+/* ─── Header overrides (light mode) ────────────────────────────────────────── */
+/* Brand text gradient — clean dark in light mode */
+[data-theme="light"] span[style*="-webkit-text-fill-color: transparent"][style*="linear-gradient(90deg"] {
+  background: linear-gradient(90deg, #111827, #6b7280) !important;
+  -webkit-background-clip: text !important;
+}
+
+/* Profile dropdown hover */
+[data-theme="light"] .hover\:bg-white\/\[0\.06\]:hover {
+  background-color: #f3f4f6 !important;
+}
+
+/* Profile dropdown arrow and misc SVG icons */
+[data-theme="light"] svg.text-white\/20 {
+  color: #9ca3af !important;
+}
+
+/* ─── Inline-styled dark backgrounds ───────────────────────────────────────── */
+/* Hero card gradient — subtle, elegant */
+[data-theme="light"] [style*="linear-gradient(135deg, rgba(109,40,217"] {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.06) 0%, rgba(99, 102, 241, 0.04) 40%, rgba(248, 249, 252, 0.5) 100%) !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+/* Subject progress card */
+[data-theme="light"] [style*="linear-gradient(135deg"][style*="rgba(255,255,255,0.01)"] {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.04), #ffffff) !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+/* Task card glass background */
+[data-theme="light"] [style*="rgba(255,255,255,0.02)"][style*="backdrop-filter"] {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Progress bar dark background */
+[data-theme="light"] [style*="rgba(0,0,0,0.3)"] {
+  background: #e5e7eb !important;
+}
+
+/* ─── Font/text color refinements ──────────────────────────────────────────── */
+/* Small label text */
+[data-theme="light"] .text-\[10px\].text-white\/25,
+[data-theme="light"] .text-\[10px\].text-white\/20,
+[data-theme="light"] .text-\[10px\].text-white\/15 {
+  color: #9ca3af !important;
+}
+
+[data-theme="light"] .text-\[11px\].text-white\/20,
+[data-theme="light"] .text-\[11px\].text-white\/25 {
+  color: #9ca3af !important;
+}
+
+[data-theme="light"] .text-\[9px\] {
+  color: #9ca3af !important;
+}
+
+/* Subject helper text */
+[data-theme="light"] .text-xs.text-white\/25 {
+  color: #9ca3af !important;
+}
+
+/* Placeholder text for all text-white/N inside light mode */
+[data-theme="light"] .placeholder-white\/20::placeholder {
+  color: #d1d5db !important;
+}
+
+/* ─── Ambient glow blobs — very subtle in light mode ───────────────────────── */
+[data-theme="light"] .pointer-events-none.fixed.inset-0 {
+  opacity: 0.15 !important;
+}
+
+/* Specific shadow overrides for cards */
+[data-theme="light"] .shadow-md {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] .shadow-lg {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] .shadow-xl {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="light"] .shadow-2xl {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Active subject card in sidebar — clean highlight */
+[data-theme="light"] [data-sidebar="main"] [class*="bg-gradient-to-br"][class*="border-violet"] {
+  border-color: #c4b5fd !important;
+  background: linear-gradient(135deg, #f5f3ff, #ede9fe) !important;
+}
+
+[data-theme="light"] [data-sidebar="main"] [class*="bg-gradient-to-br"][class*="border-violet"] span {
+  color: #5b21b6 !important;
+}
+
+/* No scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

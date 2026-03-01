@@ -1,0 +1,3 @@
+﻿app/dashboard/page.tsx(11,33): error TS2307: Cannot find module '@/components/SmartReminderBanner' or its corresponding type declarations.
+app/exam/advanced/page.tsx(336,66): error TS2322: Type '{ key: number; className: string; style: { width: string; }; }' is not assignable to type 'IntrinsicAttributes & { className?: string | undefined; }'.
+  Property 'style' does not exist on type 'IntrinsicAttributes & { className?: string | undefined; }'.
